@@ -162,6 +162,14 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        /**
+        * API Authentication 
+        */
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        /**
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        */
+        
         /*
          * Package Service Providers...
          */
@@ -223,6 +231,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // Aliases JWT Auth - API Authentication
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
     ],
 

@@ -9,7 +9,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     private $product;
-    private $totalPage = 20;
+    private $totalPage = 5;
 
     public function __construct(Product $prod)
     {
@@ -39,14 +39,14 @@ class ProductController extends Controller
         $validate = validator($data, $this->product->rules());
         if ($validate->fails()):
             $messages = $validate->messages();
-            return response()->json(['validate.error',$messages]);
+            return response()->json(['validate.error',$messages],422);
         endif;
 
         if(!$insert = $this->product->create($data)):
             return response()->json(['error' => 'Erro ao enviar'],500);
         endif;
         
-        return response()->json($insert);
+        return response()->json(['data'=>$insert],201);
     }
 
     /**
@@ -58,7 +58,7 @@ class ProductController extends Controller
     public function show($id)
     {
         if(!$product = $this->product->find($id)):
-            return response()->json(['error'=>'product_not_found']);
+            return response()->json(['error'=>'product_not_found'],404);
         endif;
         return response()->json(['data'=>$product]);
     }
@@ -77,11 +77,11 @@ class ProductController extends Controller
 
         if ($validate->fails()){
             $messages = $validate->messages();
-            return response()->json(['validate.error',$messages]);
+            return response()->json(['validate.error',$messages], 422);
         }
 
         if(!$product = $this->product->find($id))
-            return response()->json(['error'=>'product_not_found']);
+            return response()->json(['error'=>'product_not_found'],401);
         //Verify if data in table product already was updated
         if(!$update = $product->update($data))
             return response()->json(['error' => 'product_not_update'], 500);
@@ -100,7 +100,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         if(!$product = $this->product->find($id))
-            return response()->json(['error'=>'product_not_found']);
+            return response()->json(['error'=>'product_not_found'],404);
 
         if(!$delete = $product->delete())
             return response()->json(['error' => 'product_not_delete'], 500);
@@ -117,7 +117,7 @@ class ProductController extends Controller
         if ($validate->fails()){
             $messages = $validate->messages();
 
-            return response()->json(['validate.error',$messages]);
+            return response()->json(['validate.error',$messages],422);
         }
 
         $products = $this->product->search($data,$this->totalPage);

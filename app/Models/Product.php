@@ -11,8 +11,8 @@ class Product extends Model
     public function rules($id = '')
     {
     	return [
-    		'nome' => "required|min:3|max:100|unique:products,nome,{$id},id",
-    		'descricao' => 'required|min:3|max:1500'
+    		'nome'        => "required|min:3|max:100|unique:products,nome,{$id},id",
+    		'descricao'   => 'required|min:3|max:1500'
     	];
     }
 
